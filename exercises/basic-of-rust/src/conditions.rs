@@ -4,15 +4,21 @@
 // - another function call
 // - additional variables
 pub fn bigger(a: i32, b: i32) -> i32 {
-    todo!()
+    return if a > b { a } else { b };
 }
 
 //Exercise 2
 // Input: Provide an arbitrary value of number
 // Check number is Positive or Negative or Zero
 // Output: &str
-fn check_number(number: u32) -> &'static str {
-    todo!()
+fn check_number(number: i32) -> &'static str {
+    if number > 0 {
+        "Positive"
+    } else if number < 0 {
+        "Negative"
+    } else {
+        "Zero"
+    }
 }
 
 // Exercise 3
@@ -20,10 +26,10 @@ fn check_number(number: u32) -> &'static str {
 // Step 2: Get the bar_for_fuzz and default_to_baz tests passing!
 
 pub fn foo_if_fizz(fizzish: &str) -> &str {
-    if fizzish == "fizz" {
-        "foo"
-    } else {
-        1
+    match fizzish {
+        "fizz" => "foo",
+        "fuzz" => "bar",
+        _ => "baz",
     }
 }
 
@@ -31,24 +37,67 @@ pub fn foo_if_fizz(fizzish: &str) -> &str {
 // Determine if a given year is a leap year
 // Implement logic
 fn is_leap_year(year: i32) -> bool {
-    todo!()
+    if year % 100 == 0 {
+        if year % 400 == 0 {
+            true
+        } else {
+            false
+        }
+    } else if year % 4 == 0 {
+        true
+    } else {
+        false
+    }
 }
 
 // Exercise 5
 // Calculate the factorial of a number
 // Implement logic
+
 fn factorial(n: u32) -> u32 {
-    todo!()
+    let mut result: u32 = 1;
+    if n == 0 || n == 1 {
+        result = 1
+    } else {
+        if n == 2 {
+            result = 2
+        } else {
+            for value in 2..=n {
+                result = result * value
+            }
+        }
+    }
+    result
 }
 
 // Exercise 6
 // Check if a number is prime
 // Implement logic
 
-fn is_prime(n: u32) -> bool {
-    todo!()
-}
 
+fn is_prime(n: u32) -> bool {
+    if n % n == 0 {
+        if n == 2 || n == 7 {
+            true
+        } else if n == 1 {
+            false
+        } else if n % 3 == 0
+            || n % 5 == 0
+            || n % 7 == 0
+            || n % 9 == 0
+            || n % 2 == 0
+            || n % 4 == 0
+            || n % 6 == 0
+            || n % 8 == 0
+        {
+            false
+        } else {
+            true
+        }
+    } else {
+        todo!()
+    }
+}
 
 // Don't mind this for now :)
 #[cfg(test)]
@@ -143,6 +192,4 @@ mod tests {
         assert_eq!(is_prime(10), false);
         assert_eq!(is_prime(15), false);
     }
-
-
 }
