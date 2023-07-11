@@ -2,6 +2,9 @@
 // Fix the error
 // Make it compile
 // Run test
+
+#[derive(PartialEq)]
+#[derive(Debug)]
 struct Person {
     name: String,
     age: u8,
@@ -38,20 +41,20 @@ impl Agent {
     }
 
     // Get the name of the person
-    fn get_name(&self) -> &str {
-        todo!()
+    fn get_name(&self) -> String {
+        self.name.to_string()
     }
 
     // Get the age of the person
     fn get_age(&self) -> u32 {
-        todo!()
+        self.age
     }
 }
 
-// Exercise 3
-// Fix the error
-// Make it compile
-// Run test
+// // Exercise 3
+// // Fix the error
+// // Make it compile
+// // Run test
 struct Calculator {
     value: i32,
 }
@@ -61,24 +64,24 @@ impl Calculator {
         Calculator { value: 0 }
     }
 
-    fn add(&self, num: i32) {
+    fn add(&mut self, num: i32) {
         self.value += num;
     }
 
-    fn subtract(mut self, num: i32) {
+    fn subtract(&mut self, num: i32) {
         self.value -= num;
     }
-    fn clear(self) {
+    fn clear(&mut self) {
         self.value = 0;
     }
 
-    fn get_value(self) -> i32 {
+    fn get_value(&self) -> i32 {
         self.value
     }
 }
 
-// Exercise 4
-// Make it compile
+// // Exercise 4
+// // Make it compile
 #[derive(Debug)]
 struct User {
     first: String,
@@ -95,6 +98,7 @@ fn exercise4() {
 
     let u2 = User {
         first: String::from("Mary"),
+        last: String::from("Doe"),
         ..u1
         
     };
@@ -103,8 +107,10 @@ fn exercise4() {
 
 }
 
-// Exercise 5
-// Make it compile
+// // Exercise 5
+// // Make it compile
+#[derive(Clone)]
+
 struct Foo {
     str_val: String,
     int_val: i32,
@@ -122,16 +128,16 @@ fn exercise5() {
     });
 
     
-    let moved = foos[0];
+    let moved = foos[0].clone();
 
     
-    let moved_field = foos[0].str_val;
+    let moved_field = foos[0].clone().str_val;
 }
 
-// Exercise 6
-// Structs contain data, but can also have logic. In this exercise we have
-// defined the Package struct and we want to test some logic attached to it.
-// Make the code compile and the tests pass!
+// // Exercise 6
+// // Structs contain data, but can also have logic. In this exercise we have
+// // defined the Package struct and we want to test some logic attached to it.
+// // Make the code compile and the tests pass!
 
 #[derive(Debug)]
 struct Package {
@@ -153,12 +159,16 @@ impl Package {
         }
     }
 
-    fn is_international(&self) -> ??? {
-        // Something goes here...
+    fn is_international(&self) -> bool {
+        if self.sender_country == "Spain"{
+            true
+        }else{
+            false
+        }
     }
 
-    fn get_fees(&self, cents_per_gram: i32) -> ??? {
-        // Something goes here...
+    fn get_fees(&self, cents_per_gram: i32) -> i32 {
+        self.weight_in_grams * cents_per_gram
     }
 }
 
@@ -193,7 +203,7 @@ mod tests {
         assert_eq!(agent.get_age(), 30);
     }
 
-    // Test for exercise 3
+    // // Test for exercise 3
     #[test]
     fn exercise3_should_work() {
         let mut calculator = Calculator::new();
@@ -209,7 +219,7 @@ mod tests {
     }
 
 
-    // Test for exercise 6
+    // // Test for exercise 6
     #[test]
     #[should_panic]
     fn fail_creating_weightless_package() {
