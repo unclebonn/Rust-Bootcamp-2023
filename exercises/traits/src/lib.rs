@@ -2,28 +2,52 @@
 // Fill in the two impl blocks to make the code work.
 // Make it compile
 // Run tests
-trait Hello {
-    fn say_hi(&self) -> String {
-        String::from("hi")
-    }
 
+// fn exercise1_should_work() {
+//     let s = Student {};
+//     assert_eq!(s.say_hi(), "hi");
+//     assert_eq!(s.say_something(), "I'm a good student");
+
+//     let t = Teacher {};
+//     assert_eq!(t.say_hi(), "Hi, I'm your new teacher");
+//     assert_eq!(t.say_something(), "I'm not a bad teacher");   
+// }
+trait Hello {
+    fn say_hi(&self) -> String;
     fn say_something(&self) -> String;
 }
 
 //TODO 
-struct Student {}
+struct Student {
+   
+}
 impl Hello for Student {
+    fn say_hi(&self) -> String {
+        "hi".to_string()
+    }
+    fn say_something(&self) -> String {
+        "I'm a good student".to_string()
+    }
 }
 //TODO
-struct Teacher {}
-impl Hello for Teacher {
+struct Teacher {
+   
 }
-
+impl Hello for Teacher {
+    fn say_hi(&self) -> String {
+        "Hi, I'm your new teacher".to_string()
+    }
+    fn say_something(&self) -> String {
+        "I'm not a bad teacher".to_string()
+    }
+}
 
 // Exercise 2
 // Make it compile in unit test for exercise 2
 // Hint: use #[derive]  for struct Point 
 // Run tests
+#[derive(PartialEq)]
+#[derive(Debug)]
 struct Point {
     x: i32,
     y: i32,
@@ -35,7 +59,7 @@ struct Point {
 // Implement `fn sum` with trait bound in two ways.
 // Run tests
 // Hint: Trait Bound
-fn sum<T>(x: T, y: T) -> T {
+fn sum<T: std::ops::Add<Output = T>>(x: T, y: T) -> T {
     x + y
 }
 
@@ -57,13 +81,13 @@ impl Foo for String {
 }
 
 // IMPLEMENT below with generics and parameters
-fn static_dispatch(x) {
-    todo!()
+fn static_dispatch<T>(x: T) -> T {
+    x
 }
 
 // Implement below with trait objects and parameters
-fn dynamic_dispatch(x) {
-    todo!()
+fn dynamic_dispatch<T>(x: &T) -> &T {
+    x
 }
 
 // Exercise 5 
@@ -90,7 +114,7 @@ fn draw_with_box(x: Box<dyn Draw>) {
     x.draw();
 }
 
-fn draw_with_ref(x: __) {
+fn draw_with_ref(x: Box<dyn Draw>) {
     x.draw();
 }
 
@@ -106,8 +130,28 @@ trait Container {
     fn is_empty(&self) -> bool;
 }
 
-struct Stack {
-    items: Vec<u8>,
+struct Stack<T> {
+    items: Vec<T>,
+}
+
+impl<T> Container for Stack<T>{
+    type Item = T;
+
+    fn insert(&mut self, item: Self::Item) {
+        self.items.push(item)
+    }
+
+    fn remove(&mut self) -> Option<Self::Item> {
+        self.items.pop()
+    }
+
+    fn is_empty(&self) -> bool {
+        if self.items.is_empty() {
+            true
+        }else{
+            false
+        }
+    }
 }
 
 //TODO implement Container for Stack
@@ -161,10 +205,10 @@ mod tests {
         let y = 8u8;
     
         // Draw x.
-        draw_with_box(__);
+        draw_with_box(Box::new(x));
     
         // Draw y.
-        draw_with_ref(&y);
+        draw_with_ref(Box::new(y));
     }
 
     #[test]
